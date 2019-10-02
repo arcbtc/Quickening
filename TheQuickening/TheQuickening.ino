@@ -29,8 +29,10 @@ String pubkey;
 String totcapacity;
 const char* payment_request;
 
+bool certcheck = false;
 String readmacaroon = "YOUR-READ-MAC";
 String invoicemacaroon = "YOUR-INVOICE-MAC";
+//#include "TLSCert.h" //Un-comment if you need to include a TLS Cert, also uncomment line 279, 303, 360, 403
 
 String choice;
 
@@ -265,13 +267,17 @@ void on_rates(){
     conversion = doc["data"][on_currency][on_currency.substring(3)]; 
 
 }
+
+
 // LND Requests
 
 void nodecheck(){
   bool checker = false;
   while(!checker){
   WiFiClientSecure client;
-  
+ 
+    //client.setCACert(tlscert); 
+    
   if (!client.connect(server, lndport)){
 
     tft.fillScreen(TFT_BLACK);
@@ -293,7 +299,9 @@ void reqinvoice(String value){
   
   
    WiFiClientSecure client;
-
+  
+  //client.setCACert(tlscert); 
+  
   Serial.println("\nStarting connection to server...");
   if (!client.connect(server, lndport)){
       return;   
@@ -348,7 +356,9 @@ void reqinvoice(String value){
 void gethash(String xxx){
   
    WiFiClientSecure client;
-
+   
+  //client.setCACert(tlscert); 
+  
   Serial.println("\nStarting connection to server...");
   if (!client.connect(server, lndport)){
        return;
@@ -389,6 +399,8 @@ void gethash(String xxx){
 void checkpayment(String xxx){
   
    WiFiClientSecure client;
+  
+  //client.setCACert(tlscert); 
 
   Serial.println("\nStarting connection to server...");
   if (!client.connect(server, lndport)){
