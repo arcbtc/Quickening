@@ -29,6 +29,10 @@ From "Manage Libraries" install,<br>
 - QRCode
 
 ![a](https://i.imgur.com/mCfnhZN.png)
+<p align="center">
+<img src="https://i.imgur.com/kmODKli.gif" width="50%" />
+</p>
+
 
 
 
