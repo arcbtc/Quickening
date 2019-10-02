@@ -1,7 +1,11 @@
-<img src="https://i.imgur.com/MmSiOjs.png" width="70%" float="left"  />
-
-<img src="https://i.imgur.com/nIjz1as.gif" width="30%" float="right"   />
-
+<div>
+<divfloat="left">
+<img src="https://i.imgur.com/MmSiOjs.png" width="70%"   />
+</div>
+<div float="right">
+<img src="https://i.imgur.com/nIjz1as.gif" width="30%"    />
+</div>
+</div>
 # <$8 Bitcoin Lightning Network PoS Terminal
 
 The Quickening is the cheapest fully functional bitcoin point of sale terminal in the galaxy!
