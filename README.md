@@ -1,12 +1,11 @@
 
 <img src="https://i.imgur.com/MmSiOjs.png" />
-<div class="padding-green d-inline-block px-3">
+
 <img src="https://i.imgur.com/nIjz1as.gif" width="50%" />
-</div>
+
 # <$8 Bitcoin Lightning Network PoS Terminal
 
 The Quickening is the cheapest fully functional bitcoin point of sale terminal in the galaxy!
-
 
  # Hardwware:
 * ESP32 NODEMCU-32S
