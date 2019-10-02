@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/MmSiOjs.png" width="70%" float="left"  />
 
-<img src="https://i.imgur.com/nIjz1as.gif" width="30%"  />
+<img src="https://i.imgur.com/nIjz1as.gif" width="30%" float="right"   />
 
 # <$8 Bitcoin Lightning Network PoS Terminal
 
