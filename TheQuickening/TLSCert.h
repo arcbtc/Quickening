@@ -13,4 +13,4 @@ const char* tlscert =   //SSL must be in this format, SSL for the node can be ex
     "u9iwcAiZAiEA0BjRcisPUlG+SE/s+x6/A2NuT0gtIZ3PKd/GuM5T0jM=\n" \
     "-----END CERTIFICATE-----\n";
 
-certcheck = true;
+
