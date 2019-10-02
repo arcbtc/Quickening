@@ -1,7 +1,7 @@
 
 <img src="https://i.imgur.com/MmSiOjs.png" />
 
-<img src="https://i.imgur.com/nIjz1as.gif" class="padding-white d-inline-block px-3 width="50%" />
+<img src="https://i.imgur.com/nIjz1as.gif" class="padding-white d-inline-block px-3" width="50%" />
 
 # <$8 Bitcoin Lightning Network PoS Terminal
 
