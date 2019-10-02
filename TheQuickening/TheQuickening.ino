@@ -275,7 +275,7 @@ void nodecheck(){
   if (!client.connect(server, lndport)){
 
     tft.fillScreen(TFT_BLACK);
-     tft.setCursor(10, 20);
+     tft.setCursor(36, 20);
      tft.setTextSize(1);
      tft.setTextColor(TFT_RED);
      tft.println("NO NODE DETECTED");
