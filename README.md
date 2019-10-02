@@ -1,8 +1,8 @@
 <div>
-<divfloat="left">
+<div style="float:left;width:70%;">
 <img src="https://i.imgur.com/MmSiOjs.png" width="70%"   />
 </div>
-<div float="right">
+<div style="float:right;width:30%;">
 <img src="https://i.imgur.com/nIjz1as.gif" width="30%"    />
 </div>
 </div>
