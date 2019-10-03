@@ -191,7 +191,7 @@ void page_input()
   tft.setCursor(0, 35);
   tft.println("AMOUNT THEN #");
   tft.println("");
-  tft.println("EUR: ");
+  tft.println(on_sub_currency + ": ");
   tft.println("");
   tft.println("SATS: ");
   tft.println("");
