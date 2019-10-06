@@ -6,6 +6,8 @@
 
 # <$8 Bitcoin Lightning Network PoS Terminal
 
+[![bitcoinpos](https://i.imgur.com/HSrtf68.png)](https://www.youtube.com/watch?v=Mke8vgTCdfw)
+
 The Quickening is the cheapest fully functional bitcoin point of sale terminal on the planet.
 
  # Hardware:
