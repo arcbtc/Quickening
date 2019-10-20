@@ -19,19 +19,19 @@ TFT_eSPI tft = TFT_eSPI();
 
 //Wifi details
 char wifiSSID[] = "YOUR-WIFI";
-char wifiPASS[] = "YOUR-WIFI-PASS";
+char wifiPASS[] = "YOUR-PASS";
 
 //BLITZ DETAILS
-const char*  server = "SOME-NAME.serveo.net"; //Using serveo to tunnel URL means no TLS cert is needed. In terminal run "ssh -R SOME-NAME.serveo.net:3010:localhost:8180 serveo.net"  (change SOME-NAME)
+const char*  server = "zappedd.ngrok.io"; //Using serveo to tunnel URL means no TLS cert is needed. In terminal run "ssh -R SOME-NAME.serveo.net:3010:localhost:8180 serveo.net"  (change SOME-NAME)
 const int httpsPort = 443;
-const int lndport = 3010;
+const int lndport = 443;
 String pubkey;
 String totcapacity;
 const char* payment_request;
 
 bool certcheck = false;
-String readmacaroon = "YOUR-READ-MAC";
-String invoicemacaroon = "YOUR-INVOICE-MAC";
+String readmacaroon = "0201036c6e64028a01030a105dc5e03a7e5444d4ebbdbb513d1fc40f1201301a0f0a07616464726573731204726561641a0c0a04696e666f1204726561641a100a08696e766f696365731204726561641a0f0a076d6573736167651204726561641a100a086f6666636861696e1204726561641a0f0a076f6e636861696e1204726561641a0d0a05706565727312047265616400000620b964213f708bc349dc1de651b424817651858fcfffa38345f6c566053ee22cf5";
+String invoicemacaroon = "0201036c6e640247030a105ec5e03a7e5444d4ebbdbb513d1fc40f1201301a160a0761646472657373120472656164120577726974651a170a08696e766f69636573120472656164120577726974650000062062630006bd8cc1f7ce6be81d90dd2c1b754ecf7d7d0d794fe2c36fec5680876e";
 //#include "TLSCert.h" //Un-comment if you need to include a TLS Cert, also uncomment line 279, 303, 360, 403
 
 String choice;
@@ -81,7 +81,7 @@ void setup() {
   tft.setRotation(3);
   
   tft.drawXBitmap(0, 0, topmap, 160, 66, TFT_WHITE, TFT_BLACK);
-  tft.drawXBitmap(0, 66, middlemap, 160, 28, TFT_BLUE, TFT_BLACK);
+  tft.drawXBitmap(0, 66, middlemap, 160, 28, TFT_BLACK, TFT_BLACK);
   tft.drawXBitmap(0, 94, bottommap, 160, 34, TFT_WHITE, TFT_BLACK);
   
   //connect to local wifi            
