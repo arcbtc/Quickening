@@ -37,6 +37,7 @@ From "Manage Libraries" install,<br>
 <img src="https://i.imgur.com/kmODKli.gif" width="50%" />
 </p>
 
-
-
+# Tip me
+If you like this project and might even use or extend it, why not send some tip love!
+https://paywall.link/to/f4e4e
 
