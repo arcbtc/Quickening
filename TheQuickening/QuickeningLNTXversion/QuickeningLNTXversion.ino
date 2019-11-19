@@ -30,7 +30,7 @@ bool certcheck = false;
 //
 int httpsPort = 443;
 //LNTXBOT details, from lntxbot use /api
-const char* lntxbothost = "YOURHOST";
+const char* lntxbothost = "YOURHOST"; //format like lntxbot.alhur.es
 String invoicekey = "YOUR-INVOICE-KEY"; 
 
 String choice;
