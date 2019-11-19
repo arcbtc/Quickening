@@ -17,12 +17,13 @@ TFT_eSPI tft = TFT_eSPI();
 
 //Details to change
 char wifiSSID[] = "YOUR-WIFI";
-char wifiPASS[] = "YOUR-WIFI-PASS";
+char wifiPASS[] = "YOUR-PASS";
 const char* lntxbothost = "paywall.link";
-String invoicekey = "YOUR-PAYWALL-KEY"; //from paywall backend
-String memo = "POS Q1 "; //memo to help organise transactions
+String invoicekey = "YOUR-PAYWALL-KEY"; 
+String invoicenum = "INVOICE-NUMBER"; //Create a paywall, go to "Details" of the paywall https://paywall.link/dashboard/paywalls, number in the URL, ie 931 from https://paywall.link/link/view?id=931 
+String memo = "Q1 "; //memo suffix, followed by a random number
 String on_currency = "BTCGBP"; //currency can be changed here ie BTCUSD BTCGBP etc
-
+String payid;
 
 String pubkey;
 String totcapacity;
@@ -274,7 +275,7 @@ void on_rates(){
 
 void addinvoice(String nosats){
 
-  WiFiClientSecure client;
+ WiFiClientSecure client;
   
   if (!client.connect(lntxbothost, httpsPort)) {
     Serial.println("fail");
@@ -284,7 +285,7 @@ void addinvoice(String nosats){
   
   String topost = "{  \"num_satoshis\" : " + nosats +", \"memo\" :\""+ memo + String(random(1,1000)) + "\"}";
   
-  String url = "/v1/user/invoicereq";
+  String url = "/v1/user/paywall/" + invoicenum + "/invoice";
   client.print(String("POST ") + url + "?access-token=" + invoicekey + " HTTP/1.1\r\n" +
                 "Host: " + lntxbothost + "\r\n" +
                 "User-Agent: ESP32\r\n" +
@@ -306,21 +307,26 @@ void addinvoice(String nosats){
   String line = client.readStringUntil('\n');
   line = client.readStringUntil('\n');
   Serial.println(line);
-const size_t capacity = JSON_OBJECT_SIZE(9) + 400;
+
+  
+const size_t capacity = JSON_OBJECT_SIZE(17) + 500;
+
 DynamicJsonDocument doc(capacity);
-
-
 deserializeJson(doc, line);
 
-const char* payment_request = doc["payment_request"]; 
+const char* payment_request = doc["request"]; 
+int id = doc["id"]; 
 payreq = (String)payment_request;
+payid = (String)id;
+Serial.println(payreq);
+Serial.println(payid);
 
 }
 
 
 void checkpayment(){
 
-  WiFiClientSecure client;
+ WiFiClientSecure client;
   
   if (!client.connect(lntxbothost, httpsPort)) {
     Serial.println("fail");
@@ -328,7 +334,7 @@ void checkpayment(){
     
   }
  
-  String url = "/v1/user/invoicereq/" + payreq;
+  String url = "/v1/user/invoice/" + payid;
   client.print(String("GET ") + url + "?access-token=" + invoicekey + " HTTP/1.1\r\n" +
                 "Host: " + lntxbothost + "\r\n" +
                 "User-Agent: ESP32\r\n" +
@@ -361,7 +367,7 @@ DynamicJsonDocument doc(capacity);
 
 deserializeJson(doc, line);
 
-int settled = doc["settled"]; // "lnbc4u1pwu9mzmpp5vdnqvxxp0swtr0ztlugtwwj33eure0z977rv5hfshg8np4dzg4psdqqcqzpgxqyz5vqg9ql823qfwmsjlwdlvz2u0xlj9yj38r4ca7dgujdxhhzwm45s28ryryzt6fy5jqlxgcmfygy09lnjzej943qxp9pd7254wq9vmv7w4gqmlauf5"
+int settled = doc["settled"]; 
 Serial.println(settled);
 if (settled == 1){
   settle = true;
