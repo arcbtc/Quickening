@@ -15,6 +15,7 @@ The Quickening is the cheapest fully functional bitcoin point of sale terminal o
 * 1.8 TFT 160/128
 * 4x4 adhesive matrix keypad
 * x8 female-female jumper cables
+**USE THE eSPI LIBRARY IN THIS FOLDER FOR THE CORRECT DRIVERS!!!
 
 [![ESP32 GPIO Map](https://i.imgur.com/PLP3YBG.jpg)]
 
