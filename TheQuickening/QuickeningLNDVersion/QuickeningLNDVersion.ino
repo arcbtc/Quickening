@@ -446,7 +446,7 @@ void showAddress(String XXX){
  const char* addr = XXX.c_str();
  Serial.println(addr);
   int qrSize = 12;
-  int sizes[17] = { 14, 26, 42, 62, 84, 106, 122, 152, 180, 213, 251, 287, 331, 362, 412, 480, 504 };
+  int sizes[17] = { 25, 47, 77, 114, 154, 195, 224, 279, 335, 395, 468, 535, 619, 667, 758, 854, 938 };
   int len = String(addr).length();
   for(int i=0; i<17; i++){
     if(sizes[i] > len){
@@ -456,18 +456,18 @@ void showAddress(String XXX){
   }
   QRCode qrcode;
   uint8_t qrcodeData[qrcode_getBufferSize(qrSize)];
-  qrcode_initText(&qrcode, qrcodeData, qrSize - 5, ECC_LOW, addr);
-  Serial.println(qrSize - 5);
+  qrcode_initText(&qrcode, qrcodeData, qrSize, ECC_LOW, addr);
+  Serial.println(qrSize);
  
   float scale = 2;
 
   for (uint8_t y = 0; y < qrcode.size; y++) {
     for (uint8_t x = 0; x < qrcode.size; x++) {
       if(qrcode_getModule(&qrcode, x, y)){       
-        tft.drawRect(15+3+scale*x, 3+scale*y, scale, scale, TFT_BLACK);
+        tft.fillRect(15+3+scale*x, 3+scale*y, scale, scale, TFT_BLACK);
       }
       else{
-        tft.drawRect(15+3+scale*x, 3+scale*y, scale, scale, TFT_WHITE);
+        tft.fillRect(15+3+scale*x, 3+scale*y, scale, scale, TFT_WHITE);
       }
     }
   }
