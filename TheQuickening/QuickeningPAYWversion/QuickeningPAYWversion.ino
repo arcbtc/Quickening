@@ -394,8 +394,8 @@ void showAddress(String XXX){
   }
   QRCode qrcode;
   uint8_t qrcodeData[qrcode_getBufferSize(qrSize)];
-  qrcode_initText(&qrcode, qrcodeData, qrSize-1, ECC_LOW, addr);
-  Serial.println(qrSize -1);
+  qrcode_initText(&qrcode, qrcodeData, qrSize, ECC_LOW, addr);
+  Serial.println(qrSize);
  
   float scale = 2;
 
