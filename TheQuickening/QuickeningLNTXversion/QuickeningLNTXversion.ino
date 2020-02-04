@@ -93,6 +93,7 @@ void setup() {
      tft.setTextSize(1);
      tft.setTextColor(TFT_RED);
      tft.println("WIFI NOT CONNECTED");
+     ESP.restart();
     }
     delay(1000);
     i++;
