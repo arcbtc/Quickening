@@ -94,6 +94,7 @@ void setup() {
      tft.setTextSize(1);
      tft.setTextColor(TFT_RED);
      tft.println("WIFI NOT CONNECTED");
+     ESP.restart();
     }
     delay(1000);
     i++;
@@ -456,8 +457,8 @@ void showAddress(String XXX){
   }
   QRCode qrcode;
   uint8_t qrcodeData[qrcode_getBufferSize(qrSize)];
-  qrcode_initText(&qrcode, qrcodeData, qrSize, ECC_LOW, addr);
-  Serial.println(qrSize);
+  qrcode_initText(&qrcode, qrcodeData, qrSize-1, ECC_LOW, addr);
+  Serial.println(qrSize -1);
  
   float scale = 2;
 
