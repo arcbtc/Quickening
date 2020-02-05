@@ -279,7 +279,7 @@ void addinvoice(String nosats){
   }
   
   String topost = "{  \"value\" : \"" + nosats +"\", \"memo\" :\""+ memo + String(random(1,1000)) + "\"}";
-  String url = "/v1/invoices";
+  String url = "/api/v1/invoices";
   client.print(String("POST ") + url +" HTTP/1.1\r\n" +
                 "Host: " + lnbitshost + "\r\n" +
                 "User-Agent: ESP32\r\n" +
@@ -324,7 +324,7 @@ void checkpayment(){
   if (!client.connect(lnbitshost, httpsPort)) {
     return;
   }
-  String url = "/v1/invoice/";
+  String url = "/api/v1/invoice/";
   client.print(String("GET ") + url + payhash +" HTTP/1.1\r\n" +
                 "Host: " + lnbitshost + "\r\n" +
                 "User-Agent: ESP32\r\n" +
