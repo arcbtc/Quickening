@@ -336,11 +336,21 @@ void checkpayment(){
   String line = client.readStringUntil('\n');
   Serial.println(line);
 
-  if (line == ""){
-    settle = false;
+
+  const size_t capacity = JSON_OBJECT_SIZE(1) + 100;
+  DynamicJsonDocument doc(capacity);
+  
+  deserializeJson(doc, line);
+  
+  const char* PAID = doc["PAID"];
+
+  String paidd = PAID;
+
+  if (paidd== "FALSE"){
+    data_status = "unpaid";
   }
   else{
-    settle = true;
+    data_status = "paid";
   }
 }
 
