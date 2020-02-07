@@ -9,42 +9,48 @@
 #include <string.h>
 #include <ArduinoJson.h>
 #include <WiFiClientSecure.h>
+#include <HTTPClient.h>
 #include <math.h>
-#include <TFT_eSPI.h> 
+#include <TFT_eSPI.h>
 #include "qrcode.h"
 
-TFT_eSPI tft = TFT_eSPI(); 
+TFT_eSPI tft = TFT_eSPI();
 
-//Details to change
-char wifiSSID[] = "YOUR-WIFI";
-char wifiPASS[] = "YOUR-PASS";
-const char* lntxbothost = "paywall.link";
-String invoicekey = "YOUR-PAYWALL-KEY"; 
-String invoicenum = "INVOICE-NUMBER"; //Create a paywall, go to "Details" of the paywall https://paywall.link/dashboard/paywalls, number in the URL, ie 931 from https://paywall.link/link/view?id=931 
-String memo = "Q1 "; //memo suffix, followed by a random number
-String on_currency = "BTCGBP"; //currency can be changed here ie BTCUSD BTCGBP etc
-String payid;
+//Wifi details
+char wifiSSID[] = "<api_key_goes_here>";
+char wifiPASS[] = "<your_wifi_pass>";
 
 String pubkey;
 String totcapacity;
 const char* payment_request;
 bool certcheck = false;
 
-//LNTXBOT DETAILS
-//
+//LNPAY DETAILS
 int httpsPort = 443;
 
+//API Setup
+String api_key = "<api_key_goes_here>"; // Can be found here: https://lnpay.co/dashboard/integrations
+String wallet_key = "<wi_XXXXX_key_goes_here>"; // Can be found here: https://lnpay.co/dashboard/advanced-wallets
 
+//Endpoint setup
+const char* api_endpoint = "https://lnpay.co/v1";
+String invoice_create_endpoint = "/user/wallet/" + wallet_key + "/invoice";
+String invoice_check_endpoint = "/user/lntx/"; //append LNTX ID to the end (e.g. /user/lntx/lntx_mfEKSse22)
+
+String lntx_id;
 String choice;
 
+//PAYMENT SETUP
+String on_currency = "BTCUSD"; //currency can be changed here ie BTCUSD BTCGBP etc
 String on_sub_currency = on_currency.substring(3);
+String memo = "Memo "; //memo suffix, followed by the price then a random number
 
   String key_val;
   String cntr = "0";
   String inputs;
   int keysdec;
   int keyssdec;
-  float temp;  
+  float temp;
   String fiat;
   float satoshis;
   String nosats;
@@ -57,7 +63,7 @@ String on_sub_currency = on_currency.substring(3);
   String payreq;
   String hash;
   String virtkey;
-  
+
 //Set keypad
 const byte rows = 4; //four rows
 const byte cols = 3; //three columns
@@ -78,13 +84,13 @@ void setup() {
   Serial.begin(115200);
   tft.fillScreen(TFT_BLACK);
   tft.setRotation(3);
-  
+
   tft.drawXBitmap(0, 0, topmap, 160, 66, TFT_WHITE, TFT_BLACK);
   tft.drawXBitmap(0, 66, middlemap, 160, 28, TFT_BLACK, TFT_BLACK);
   tft.drawXBitmap(0, 94, bottommap, 160, 34, TFT_WHITE, TFT_BLACK);
-  
-  //connect to local wifi            
-  WiFi.begin(wifiSSID, wifiPASS);   
+
+  //connect to local wifi
+  WiFi.begin(wifiSSID, wifiPASS);
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
     if(i >= 5){
@@ -108,32 +114,33 @@ void setup() {
   }
   page_nodecheck();
   on_rates();
-//  nodecheck();
+
 }
 
 void loop() {
   inputs = "";
   page_input();
-  displaysats(); 
+  displaysats();
   bool cntr = false;
-  
+
   while (cntr != true){
-    
+
    char key = keypad.getKey();
    if (key != NO_KEY){
      virtkey = String(key);
-       
+
        if (virtkey == "#"){
         page_processing();
         addinvoice(nosats);
 
         showAddress(payreq);
+
         checkpayment();
         int counta = 0;
          while (settle != true){
            counta++;
            virtkey = String(keypad.getKey());
-         
+
            if (virtkey == "*"){
             tft.fillScreen(TFT_BLACK);
             tft.setCursor(52, 40);
@@ -156,26 +163,24 @@ void loop() {
               cntr = true;
              }
            }
-           if(counta >20){
+           if(counta >30){
             settle = true;
-            tft.fillScreen(TFT_BLACK);
             cntr = true;
            }
-           delay(1000);
          }
        }
-      
+
       else if (virtkey == "*"){
         tft.fillScreen(TFT_BLACK);
         tft.setCursor(0, 0);
         tft.setTextColor(TFT_WHITE);
         key_val = "";
-        inputs = "";  
+        inputs = "";
         nosats = "";
         virtkey = "";
         cntr = "2";
       }
-      displaysats();    
+      displaysats();
     }
   }
 }
@@ -204,23 +209,23 @@ void page_input()
 }
 
 void page_processing()
-{ 
+{
   tft.fillScreen(TFT_BLACK);
   tft.setCursor(49, 40);
   tft.setTextSize(1);
   tft.setTextColor(TFT_WHITE);
   tft.println("PROCESSING");
- 
+
 }
 
 void page_nodecheck()
-{ 
+{
   tft.fillScreen(TFT_BLACK);
   tft.setCursor(49, 40);
   tft.setTextSize(1);
   tft.setTextColor(TFT_WHITE);
   tft.println("INITIALISING");
- 
+
 }
 
 void displaysats(){
@@ -230,7 +235,7 @@ void displaysats(){
   satoshis = temp/conversion;
   int intsats = (int) round(satoshis*100000000.0);
   Serial.println(intsats);
-  
+
   nosats = String(intsats);
   tft.setTextSize(1);
   tft.setTextColor(TFT_RED, TFT_BLACK);
@@ -269,113 +274,75 @@ void on_rates(){
     const size_t capacity = 169*JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(168) + 3800;
     DynamicJsonDocument doc(capacity);
     deserializeJson(doc, line);
-    conversion = doc["data"][on_currency][on_currency.substring(3)]; 
+    conversion = doc["data"][on_currency][on_currency.substring(3)];
 
 }
 
 
 void addinvoice(String nosats){
 
- WiFiClientSecure client;
-  
-  if (!client.connect(lntxbothost, httpsPort)) {
-    Serial.println("fail");
-    return;
-    
-  }
-  
-  String topost = "{  \"num_satoshis\" : " + nosats +", \"memo\" :\""+ memo + String(random(1,1000)) + "\"}";
-  
-  String url = "/v1/user/paywall/" + invoicenum + "/invoice";
-  client.print(String("POST ") + url + "?access-token=" + invoicekey + " HTTP/1.1\r\n" +
-                "Host: " + lntxbothost + "\r\n" +
-                "User-Agent: ESP32\r\n" +
-                "Content-Type: application/json\r\n" +
-                "Connection: close\r\n" +
-                "Content-Length: " + topost.length() + "\r\n" +
-                "\r\n" + 
-                topost + "\n");
+ String payload;
+  HTTPClient http;
+  http.begin(api_endpoint + invoice_create_endpoint + "?fields=payment_request,id"); //Getting fancy to response size
+  http.addHeader("Content-Type","application/json");
+  http.addHeader("X-Api-Key",api_key);
+  String toPost = "{  \"num_satoshis\" : " + nosats +", \"memo\" :\""+ memo + String(random(1,1000)) + "\"}";
+  int httpCode = http.POST(toPost); //Make the request
 
-  
-  while (client.connected()) {
-    String line = client.readStringUntil('\n');
-   // Serial.println(line);
-    if (line == "\r") {
-      break;
+  if (httpCode > 0) { //Check for the returning code
+      payload = http.getString();
+      Serial.println(payload);
     }
+  else {
+    Serial.println("Error on HTTP request");
   }
-  
-  String line = client.readStringUntil('\n');
-  line = client.readStringUntil('\n');
-  Serial.println(line);
+  http.end(); //Free the resources
 
-  
-const size_t capacity = JSON_OBJECT_SIZE(17) + 500;
+  Serial.println(payload);
 
-DynamicJsonDocument doc(capacity);
-deserializeJson(doc, line);
 
-const char* payment_request = doc["request"]; 
-int id = doc["id"]; 
-payreq = (String)payment_request;
-payid = (String)id;
-Serial.println(payreq);
-Serial.println(payid);
+  const size_t capacity = JSON_OBJECT_SIZE(2) + 500;
+  DynamicJsonDocument doc(capacity);
+  deserializeJson(doc, payload);
 
+  const char* payment_request = doc["payment_request"];
+  const char* id = doc["id"];
+  payreq = (String) payment_request;
+  lntx_id = (String) id;
+  Serial.println(payreq);
+  Serial.println(lntx_id);
 }
 
 
 void checkpayment(){
+  String payload;
+  HTTPClient http;
+  http.begin(api_endpoint + invoice_check_endpoint + lntx_id + "?fields=settled"); //Getting fancy to response size
+  http.addHeader("Content-Type","application/json");
+  http.addHeader("X-Api-Key",api_key);
+  int httpCode = http.GET(); //Make the request
 
- WiFiClientSecure client;
-  
-  if (!client.connect(lntxbothost, httpsPort)) {
-    Serial.println("fail");
-    return;
-    
-  }
- 
-  String url = "/v1/user/invoice/" + payid;
-  client.print(String("GET ") + url + "?access-token=" + invoicekey + " HTTP/1.1\r\n" +
-                "Host: " + lntxbothost + "\r\n" +
-                "User-Agent: ESP32\r\n" +
-                "Content-Type: application/json\r\n" +
-               "Connection: close\r\n\r\n");
-    Serial.println(String("GET ") + url + "?access-token=" + invoicekey + " HTTP/1.1\r\n" +
-                "Host: " + lntxbothost + "\r\n" +
-                "User-Agent: ESP32\r\n" +
-                "Content-Type: application/json\r\n" +
-               "Connection: close\r\n\r\n");
-  
-
-
-  
-  while (client.connected()) {
-    String line = client.readStringUntil('\n');
-    
-    if (line == "\r") {
-      break;
-      Serial.println(line);
+  if (httpCode > 0) { //Check for the returning code
+      payload = http.getString();
+      Serial.println(payload);
     }
+  else {
+    Serial.println("Error on HTTP request");
   }
-  
-  String line = client.readStringUntil('\n');
-  line = client.readStringUntil('\n');
-  Serial.println(line);
-const size_t capacity = JSON_OBJECT_SIZE(9) + 400;
-DynamicJsonDocument doc(capacity);
+  http.end(); //Free the resources
 
+  const size_t capacity = JSON_OBJECT_SIZE(2) + 500;
+  DynamicJsonDocument doc(capacity);
+  deserializeJson(doc, payload);
 
-deserializeJson(doc, line);
-
-int settled = doc["settled"]; 
-Serial.println(settled);
-if (settled == 1){
-  settle = true;
-}
-else{
-  settle = false;
-}
+  int settled = doc["settled"];
+  Serial.println(settled);
+  if (settled == 1){
+    data_status = "paid";
+  }
+  else{
+    data_status = "unpaid";
+  }
 }
 
 void showAddress(String XXX){
@@ -396,16 +363,16 @@ void showAddress(String XXX){
   uint8_t qrcodeData[qrcode_getBufferSize(qrSize)];
   qrcode_initText(&qrcode, qrcodeData, qrSize-1, ECC_LOW, addr);
   Serial.println(qrSize -1);
- 
+
   float scale = 2;
 
   for (uint8_t y = 0; y < qrcode.size; y++) {
     for (uint8_t x = 0; x < qrcode.size; x++) {
-      if(qrcode_getModule(&qrcode, x, y)){       
-        tft.drawRect(15+3+scale*x, 3+scale*y, scale, scale, TFT_BLACK);
+      if(qrcode_getModule(&qrcode, x, y)){
+        tft.drawRect(15+2+scale*x, 2+scale*y, scale, scale, TFT_BLACK);
       }
       else{
-        tft.drawRect(15+3+scale*x, 3+scale*y, scale, scale, TFT_WHITE);
+        tft.drawRect(15+2+scale*x, 2+scale*y, scale, scale, TFT_WHITE);
       }
     }
   }
