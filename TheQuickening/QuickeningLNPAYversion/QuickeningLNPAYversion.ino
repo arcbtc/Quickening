@@ -17,7 +17,7 @@
 TFT_eSPI tft = TFT_eSPI();
 
 //Wifi details
-char wifiSSID[] = "<api_key_goes_here>";
+char wifiSSID[] = "<your_wifi_SSID>";
 char wifiPASS[] = "<your_wifi_pass>";
 
 String pubkey;
