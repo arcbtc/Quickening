@@ -15,20 +15,27 @@
 
 TFT_eSPI tft = TFT_eSPI(); 
 
+
+
+/////SETUP VARIABLES////////
+
 //Wifi details
 char wifiSSID[] = "YOUR-WIFI-SSID";
 char wifiPASS[] = "YOUR-PASS";
-
-String pubkey;
-String totcapacity;
-const char* payment_request;
-bool certcheck = false;
 
 //LNBITS DETAILS
 int httpsPort = 443;
 const char* lnbitshost = "lnbits.com"; // Change to you LNBits host
 String invoicekey = "YOUR-LNBITS-INVOICE-API"; 
 
+/////////////////////////
+
+
+
+String pubkey;
+String totcapacity;
+const char* payment_request;
+bool certcheck = false;
 
 String choice;
 String payhash;
