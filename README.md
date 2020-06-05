@@ -1,4 +1,4 @@
-
+## WARNING: WALLET IS IN BETA
 <p align="center">
 <img src="https://i.imgur.com/PJXob0B.png" />
 </p>
