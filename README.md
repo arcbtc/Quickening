@@ -39,6 +39,6 @@ From "Manage Libraries" install,<br>
 
 ![a](https://i.imgur.com/mCfnhZN.png)
 <p align="center">
-<img src="https://i.imgur.com/kmODKli.gif" width="50%" /><img style="width:50%;" src="https://i.imgur.com/9iSkKWK.jpg" />
+<img src="https://i.imgur.com/kmODKli.gif" width="50%" /><img width="50%" src="https://i.imgur.com/9iSkKWK.jpg" />
 </p>
 
