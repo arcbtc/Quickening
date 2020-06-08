@@ -36,6 +36,7 @@ From "Manage Libraries" install,<br>
 - ArduinoJson
 - TFT_eSPI
 - QRCode
+
 ![a](https://i.imgur.com/mCfnhZN.png)
 
 # My favorite Quickening in the wild
