@@ -42,7 +42,6 @@ From "Manage Libraries" install,<br>
 <img src="https://i.imgur.com/kmODKli.gif" width="50%" />
 </p>
 
-# Tip me
-If you like this project and might even use or extend it, why not send some tip love!
-https://lnbits.com/paywall/fZVEW2jjdar9pC3psahc3Z
-
+# My favorite example of a Quickening in the wild!
+<img src="https://i.imgur.com/9iSkKWK.jpg" />
+https://twitter.com/leblitzdick/status/1270008973152976896
