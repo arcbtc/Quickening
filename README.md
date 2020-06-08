@@ -43,5 +43,5 @@ From "Manage Libraries" install,<br>
 </p>
 
 # My favorite example of a Quickening in the wild!
-<img src="https://i.imgur.com/9iSkKWK.jpg" />
+<img style="width:500px;" src="https://i.imgur.com/9iSkKWK.jpg" />
 https://twitter.com/leblitzdick/status/1270008973152976896
