@@ -1,7 +1,7 @@
 
 <img src="https://i.imgur.com/MmSiOjs.png" />
 <p align="center">
-<img src="https://i.imgur.com/nIjz1as.gif" width="50%" />
+ <img src="https://i.imgur.com/kmODKli.gif" width="50%" />
 </p>
 
 # <$8 Bitcoin Lightning Network PoS Terminal
@@ -43,7 +43,4 @@ From "Manage Libraries" install,<br>
 <img width="50%" src="https://i.imgur.com/9iSkKWK.jpg" />
 https://twitter.com/leblitzdick/status/1270008973152976896
 
-<p align="center">
-<img src="https://i.imgur.com/kmODKli.gif" width="50%" />
-</p>
 
