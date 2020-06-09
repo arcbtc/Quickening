@@ -39,7 +39,7 @@ From "Manage Libraries" install,<br>
 
 ![a](https://i.imgur.com/mCfnhZN.png)
 
-# My favorite Quickening in the wild
+# My favourite Quickening in the wild
 <img width="50%" src="https://i.imgur.com/9iSkKWK.jpg" />
 https://twitter.com/leblitzdick/status/1270008973152976896
 
